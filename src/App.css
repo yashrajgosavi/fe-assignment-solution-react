@@ -1,3 +1,22 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  padding: 10px;
+}
+
+.search-and-sort {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sort-section {
+  display: grid;
+  align-items: center;
+}
+
 select {
   margin-right: 10px;
   padding: 8px;
@@ -7,4 +26,23 @@ input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.movie-title {
+  list-style: none;
+  cursor: pointer;
+}
+
+.movie-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #f2f2f2dd;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.movie-info:hover {
+  background-color: #dcdcdc;
 }

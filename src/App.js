@@ -5,6 +5,7 @@ import InputField from "./components/InputField";
 import LoadingMessage from "./components/LoadingMessage";
 import ErrorMessage from "./components/ErrorMessage";
 import MovieList from "./components/MovieList";
+import MovieInfo from "./components/MovieInfo";
 import "./App.css";
 
 function App() {
@@ -43,33 +44,42 @@ function App() {
   }, [movies, searchItem, sortType]);
 
   return (
-    <div>
+    <>
       {isLoading ? (
         <LoadingMessage />
       ) : hasError ? (
         <ErrorMessage message={errorMessage} />
       ) : (
-        <>
-          <SelectDropdown
-            value={sortType}
-            options={[
-              { value: "year", label: "YEAR" },
-              { value: "episode", label: "EPISODE" },
-            ]}
-            onChange={(e) => setSortType(e.target.value)}
-          />
-          <InputField
-            value={searchItem}
-            placeholder="Search by title"
-            onChange={(e) => setSearchItem(e.target.value)}
-          />
-        </>
+        <div className="container">
+          <div>
+            <div className="search-and-sort">
+              <div className="sort-section">
+                <SelectDropdown
+                  value={sortType}
+                  options={[
+                    { value: "year", label: "YEAR" },
+                    { value: "episode", label: "EPISODE" },
+                  ]}
+                  onChange={(e) => setSortType(e.target.value)}
+                />
+              </div>
+              <InputField
+                value={searchItem}
+                placeholder="Search by title"
+                onChange={(e) => setSearchItem(e.target.value)}
+              />
+            </div>
+            <MovieList
+              movies={searchAndSortedMovies}
+              onMovieClick={setSelectedMovie}
+            />
+          </div>
+          <div>
+            <MovieInfo movie={selectedMovie} />
+          </div>
+        </div>
       )}
-      <MovieList
-        movies={searchAndSortedMovies}
-        onMovieClick={setSelectedMovie}
-      />
-    </div>
+    </>
   );
 }
 
