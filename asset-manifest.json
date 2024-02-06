@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/fe-assignment-solution-react/static/css/main.63ddc068.css",
+    "main.js": "/fe-assignment-solution-react/static/js/main.3eae0b5d.js",
+    "static/js/787.ff82c6e2.chunk.js": "/fe-assignment-solution-react/static/js/787.ff82c6e2.chunk.js",
+    "index.html": "/fe-assignment-solution-react/index.html",
+    "main.63ddc068.css.map": "/fe-assignment-solution-react/static/css/main.63ddc068.css.map",
+    "main.3eae0b5d.js.map": "/fe-assignment-solution-react/static/js/main.3eae0b5d.js.map",
+    "787.ff82c6e2.chunk.js.map": "/fe-assignment-solution-react/static/js/787.ff82c6e2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.63ddc068.css",
+    "static/js/main.3eae0b5d.js"
+  ]
+}
