@@ -1,0 +1,32 @@
+name: Bun, Azure
+on:
+  push:
+    branches: [develop]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/fe-assignment-solution-react:${{ github.run_number}} .
+          docker login ${{ secrets.REGISTRY_LOGIN_SERVER }} -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/fe-assignment-solution-react:${{ github.run_number }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: mtafecr
+          containerAppName: mtaf-frontend
+          resourceGroup: bicepBrew
+          imageToDeploy: brewacr.azurecr.io/fe-assignment-solution-react:${{ github.run_number }}
