@@ -1,31 +1,36 @@
-name: Bun, Azure
+name: Build and Push React Container
+
 on:
   workflow_dispatch:
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Azure Login
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Project
+        run: yarn build
+
+      - name: Login to Azure Container Registry
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and Push Docker Image
+      - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/fe-assignment-solution-react:${{ github.run_number}} .
-          docker login ${{ secrets.REGISTRY_LOGIN_SERVER }} -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/fe-assignment-solution-react:${{ github.run_number }}
-        env:
-          DOCKER_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          docker build -t mtafecr/fe-assignment-solution-react:${{ github.run_number }} .
+          echo "Docker image built and tagged"
 
-      - name: Deploy Container App
-        uses: azure/container-apps-deploy-action@v1
-        with:
-          acrName: mtafecr
-          containerAppName: mtaf-frontend
-          resourceGroup: bicepBrew
-          imageToDeploy: brewacr.azurecr.io/fe-assignment-solution-react:${{ github.run_number }}
+      - name: Push Docker Image
+        run: |
+          docker push mtafecr/fe-assignment-solution-react:${{ github.run_number }}
+          echo "Docker image pushed to registry"
